@@ -1,83 +1,89 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { authActions } from '../store/auth';
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from 'axios';
+
 const Login = () => {
-    const [Values, setValues] = useState({
-      username: "",
-      password: "",
-    });
-  
-    const navigate = useNavigate();
-    const dispatch=useDispatch();  
-  
-    const change = (e) => {
-      const { name, value } = e.target;
-      setValues({ ...Values, [name]: value });
-      console.log(name, Values);
-    };
-  
-    const submit = async () => {
-      try {
-        if (
-          Values.username === "" ||
-          Values.password === "" 
-        ) {
-          alert("All fields are required");
-          return;
-        }
-        else{
-        const response = await axios.post(
-          "http://localhost:3000/api/v1/sign-in",
-          Values
-        );
-        //console.log(response.data._id);
-        dispatch(authActions.login());
-        dispatch(authActions.changeRole(response.data.role));
-        localStorage.setItem("id",response.data.id);
-        localStorage.setItem("token",response.data.token);
-        localStorage.setItem("role",response.data.role);
+  const [Values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();  
+
+  const change = (e) => {
+    const { name, value } = e.target;
+    setValues({ ...Values, [name]: value });
+  };
+
+  const submit = async () => {
+    try {
+      if (!Values.email || !Values.password) {
+        alert("All fields are required");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/sign-in",
+        Values
+      );
+
+      const { id, token, role } = response.data;
+
+      dispatch(authActions.login());
+      dispatch(authActions.changeRole(role));
+
+      localStorage.setItem("id", id);
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+
+      // Redirect based on role
+      if (role === 'admin') {
+        navigate("/admin-profile");
+      } else {
         navigate("/profile");
       }
-      } catch (error) {
-        alert(error.response.data.message);
-        console.error("Sign-up error:", error.response?.data || error.message);
-      }
-    };
-  
+
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed");
+      console.error("Login error:", error.response?.data || error.message);
+    }
+  };
+
   return (
-    <div className='h-screen  bg-zinc-900 px-12 py-8 flex items-center justify-center'>
+    <div className='h-screen bg-zinc-900 px-12 py-8 flex items-center justify-center'>
       <div className='bg-zinc-800 rounded-lg px-8 py-5 w-full md:w-3/6 lg:w-2/6'>
         <p className='text-zinc-200 text-xl'>Login</p>
         <div className='mt-4'>
           <div>
-            <label htmlFor="" className='text-zinc-400'>Username</label>
-            <input type="text" 
+            <label className='text-zinc-400'>Email</label>
+            <input type="email" 
               className='w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none' 
-              placeholder='username' 
-              name='username' 
-              required
-              value={Values.username}
+              placeholder='email' 
+              name='email' 
+              value={Values.email}
               onChange={change}
             />
           </div>
 
           <div className='mt-4'>
-            <label htmlFor="" className='text-zinc-400'>Password</label>
+            <label className='text-zinc-400'>Password</label>
             <input type='password' 
               className='w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none' 
               placeholder='password' 
               name='password' 
-              required
               value={Values.password}
               onChange={change}
             />
           </div>
 
           <div className='mt-4'>
-            <button className='w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition-all duration-300'
-            onClick={submit}>
+            <button 
+              className='w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition-all duration-300'
+              onClick={submit}
+            >
               Log In
             </button>
           </div>

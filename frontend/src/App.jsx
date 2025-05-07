@@ -40,6 +40,7 @@ const App = () => {
           <Route path="/all-books"element={<AllBooks/>}/>
           <Route path="/cart"element={<Cart/>}/>
           <Route path="/profile"element={<Profile/>}>
+          {role==="user" ? (<Route index element={<Favourites/>}/>):(<Route index element={<Favourites/>}/>)}
           <Route index element={<Favourites/>}/>
           <Route path="/profile/OrderHistory" element={<OrderHistory/>}/>
           <Route path="/profile/Settings" element={<Settings/>}/>

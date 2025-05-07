@@ -50,9 +50,9 @@ router.post("/sign-up", async (req, res) => {
 // Sign-In Route
 router.post("/sign-in", async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ email });
         if (!existingUser) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
@@ -80,6 +80,7 @@ router.post("/sign-in", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
 
 // Get User Information Route
 router.get("/get-user-information", authenticateToken, async (req, res) => {
