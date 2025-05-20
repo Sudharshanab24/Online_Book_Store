@@ -14,3 +14,8 @@
 
  backend:
  to run -> node App.js
+
+ for websocket:
+ npm install ws
+ npm install ws --save
+npm install react-toastify --save
