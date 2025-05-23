@@ -1,52 +1,50 @@
 require('dotenv').config();
-
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const http = require('http');
 const path = require("path");
 
-// Your DB connection and routes (replace with actual files)
 require("./conn/conn");
 
 const userRoutes = require("./routes/user");
-const Books = require("./routes/book");
-const Favourite = require("./routes/favourite");
-const Cart = require("./routes/cart");
-const Order = require("./routes/order");
+const bookRoutes = require("./routes/book");
+const favouriteRoutes = require("./routes/favourite");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
+const OrderModel = require("./models/order");
 
 const PORT = process.env.PORT || 3000;
+
+const app = express();
 
 app.use(express.json());
 app.use(cors());
 
 app.use("/api/v1", userRoutes);
-app.use("/api/v1", Books);
-app.use("/api/v1", Favourite);
-app.use("/api/v1", Cart);
-app.use("/api/v1", Order);
+app.use("/api/v1", bookRoutes);
+app.use("/api/v1", favouriteRoutes);
+app.use("/api/v1", cartRoutes);
+app.use("/api/v1", orderRoutes);
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 const server = http.createServer(app);
 
-// Setup WebSocket on the same server, specify path "/ws"
+// Import setupWebSocket correctly and initialize
 const setupWebSocket = require('./websocket');
 const { sendUpdatedStatus } = setupWebSocket(server);
 
 app.post('/api/v1/admin/update-order-status', async (req, res) => {
   try {
     const { orderId, newStatus } = req.body;
-
-    const order = await Order.findById(orderId);
+    const order = await OrderModel.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-
     order.status = newStatus;
     await order.save();
 
-    // Notify clients
+    // Send real-time update to WebSocket clients
     sendUpdatedStatus(orderId, newStatus);
 
     res.status(200).json({ message: "Order status updated successfully" });

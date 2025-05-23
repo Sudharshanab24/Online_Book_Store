@@ -13,13 +13,20 @@ router.post("/add-book", authenticateToken, async (req, res) => {
             return res.status(403).json({ message: "Access denied. Admins only." });
         }
 
+        const { imageUrl, title, author, price, desc, language, standard } = req.body;
+
+        if (!imageUrl || !title || !author || !price || !desc || !language || !standard) {
+            return res.status(400).json({ message: "All fields including standard are required." });
+        }
+
         const book = new Book({
-            imageUrl: req.body.imageUrl, // ✅ Image URL field
-            title: req.body.title,
-            author: req.body.author,
-            price: req.body.price,
-            desc: req.body.desc,
-            language: req.body.language,
+            imageUrl,
+            title,
+            author,
+            price,
+            desc,
+            language,
+            standard,
         });
 
         await book.save();
@@ -40,7 +47,7 @@ router.put("/update-book", authenticateToken, async (req, res) => {
             return res.status(403).json({ message: "Access denied. Admins only." });
         }
 
-        const { bookid, imageUrl, title, author, price, desc, language } = req.body;
+        const { bookid, imageUrl, title, author, price, desc, language, standard } = req.body;
 
         if (!bookid) {
             return res.status(400).json({ message: "Book ID is required" });
@@ -52,7 +59,15 @@ router.put("/update-book", authenticateToken, async (req, res) => {
             return res.status(404).json({ message: "Book not found" });
         }
 
-        await Book.findByIdAndUpdate(bookid, { imageUrl, title, author, price, desc, language });
+        await Book.findByIdAndUpdate(bookid, {
+            imageUrl,
+            title,
+            author,
+            price,
+            desc,
+            language,
+            standard,
+        });
 
         return res.status(200).json({ message: "Book updated successfully" });
     } catch (error) {
@@ -92,10 +107,14 @@ router.delete("/delete-book", authenticateToken, async (req, res) => {
     }
 });
 
-// ✅ Get all books
+// ✅ Get all books (with optional standard filter)
 router.get("/get-all-books", async (req, res) => {
     try {
-        const books = await Book.find().sort({ createdAt: -1 });
+        const { standard } = req.query;
+        const filter = standard ? { standard } : {};
+
+        const books = await Book.find(filter).sort({ createdAt: -1 });
+
         return res.json({
             status: "success",
             data: books,

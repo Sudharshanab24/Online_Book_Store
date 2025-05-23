@@ -97,6 +97,21 @@ router.get("/get-user-information", authenticateToken, async (req, res) => {
     }
 });
 
+// Get any user's info by ID (admin only or open if needed)
+router.get("/user/:id", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ data: user });
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 //update address
 router.put("/update-address", authenticateToken, async (req, res) => {
     try {

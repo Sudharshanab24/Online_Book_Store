@@ -18,6 +18,7 @@ import Settings from './components/Profile/Settings';
 import AllOrders from './pages/AllOrders';
 import AddBooks from './pages/AddBooks';
 import UpdateBook from './pages/UpdateBook';
+import UserDetails from "./pages/UserDetails";
 
 // Import toast container and styles
 import { ToastContainer } from 'react-toastify';
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/profile/OrderHistory" element={<OrderHistory/>}/>
           <Route path="/profile/Settings" element={<Settings/>}/>
         </Route>
+        <Route path="/user/:userId" element={<UserDetails />} />
         <Route path="/SignUp" element={<SignUp/>}/>
         <Route path="/LogIn" element={<LogIn/>}/>
         <Route path="/updateBook/:id" element={<UpdateBook/>}/>

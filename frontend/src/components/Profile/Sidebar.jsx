@@ -21,7 +21,8 @@ const Sidebar = ({ data }) => {
   const isAdmin = data.username === "admin"; // fix for username check
 
   return (
-    <div className="bg-zinc-800 p-4 rounded flex flex-col items-center justify-center h-full">
+    <div className="bg-zinc-800 p-4 rounded fixed top-17 left-0 h-screen w-[240px] z-10 flex flex-col items-center justify-start overflow-y-auto">
+
       <div className="flex items-center flex-col justify-center">
         <img src={data.avatar} className="h-[12vh]" alt="User Avatar" />
         <p className="mt-3 text-xl text-zinc-100 font-semibold">{data.username}</p>

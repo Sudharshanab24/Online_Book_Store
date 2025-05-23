@@ -1,17 +1,14 @@
 const WebSocket = require('ws');
 
-let wss;
-
 function setupWebSocket(server) {
-  wss = new WebSocket.Server({ server, path: "/ws" });
+  const wss = new WebSocket.Server({ server, path: '/ws' });
 
   wss.on('connection', (ws) => {
-    console.log('New WebSocket client connected');
+    console.log('WebSocket client connected');
 
     ws.on('message', (message) => {
-      console.log('Received:', message);
-      // Echo message back to client (for testing)
-      ws.send(JSON.stringify({ received: message.toString() }));
+      console.log('Received message from client:', message);
+      // Optional: handle client messages here
     });
 
     ws.on('close', () => {
@@ -19,6 +16,7 @@ function setupWebSocket(server) {
     });
   });
 
+  // Broadcast function to send updated order status to all connected clients
   function sendUpdatedStatus(orderId, newStatus) {
     const data = JSON.stringify({ orderId, newStatus });
     wss.clients.forEach(client => {
