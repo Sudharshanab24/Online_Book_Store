@@ -40,7 +40,7 @@ const App = () => {
   }, []);
     
   return (
-    <div>
+    <div className="bg-black">
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home/>}/>

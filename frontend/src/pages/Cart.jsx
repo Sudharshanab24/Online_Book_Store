@@ -80,7 +80,7 @@ const Cart = () => {
   };
 
   return (
-    <div className='bg-zinc-900 px-6 md:px-12 py-8 min-h-screen'>
+    <div className='bg-zinc-900 px-6 md:px-12 py-8 min-h-screen pt-20'>
       {!Cart && <div className='w-full h-[100%] flex items-center justify-center'><Loader />{" "}</div>}
 
       {Cart && Cart.length === 0 && (

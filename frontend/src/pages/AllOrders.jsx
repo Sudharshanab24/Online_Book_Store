@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs"; // npm install dayjs
+import dayjs from "dayjs";
 
 function AllOrders() {
   const [orders, setOrders] = useState([]);
@@ -36,7 +36,6 @@ function AllOrders() {
     if (userId) navigate(`/user/${userId}`);
   };
 
-  // Group orders by timestamp
   const groupedOrders = orders.reduce((acc, order) => {
     const groupKey = dayjs(order.createdAt).format("YYYY-MM-DD HH:mm");
     if (!acc[groupKey]) acc[groupKey] = [];
@@ -44,8 +43,9 @@ function AllOrders() {
     return acc;
   }, {});
 
+  // ✅ return block must be inside the function
   return (
-    <div className="p-4 text-zinc-100">
+    <div className="p-4 text-zinc-100 pt-[90px]">
       <h1 className="text-3xl md:text-5xl font-semibold text-zinc-500 mb-8">All Orders</h1>
 
       {error && <div className="text-red-500">{error}</div>}
@@ -73,7 +73,7 @@ function AllOrders() {
             </div>
 
             <div className="flex flex-wrap gap-4 overflow-x-auto">
-              {ordersInGroup.map((order, i) => (
+              {ordersInGroup.map((order) => (
                 <div
                   key={order._id}
                   className="min-w-[250px] bg-zinc-900 p-4 rounded shadow hover:bg-zinc-950 cursor-pointer transition-all"

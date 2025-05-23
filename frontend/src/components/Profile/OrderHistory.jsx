@@ -86,7 +86,7 @@ const OrderHistory = () => {
     <>
       {!groupedOrders && <Loader />}
       {groupedOrders && Object.keys(groupedOrders).length === 0 && (
-        <div className="h-[80vh] p-4 text-zinc-100 flex flex-col items-center justify-center">
+        <div className="h-[80vh] p-4 text-zinc-100 flex flex-col items-center justify-center pt-20">
           <h1 className="text-5xl font-semibold text-zinc-500 mb-8">No order history</h1>
           <img
             src="https://cdn-icons-png.flaticon.com/128/9961/9961218.png"

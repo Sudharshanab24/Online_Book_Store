@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import { FaGripLines } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
-
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const role = useSelector((state) => state.auth.role);
 
-  // Build the navigation links based on login and role
   let filteredLinks = [
     { title: "Home", link: "/" },
     { title: "All Books", link: "/all-books" },
@@ -29,7 +27,8 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className='z-50 relative flex bg-zinc-800 text-white px-8 py-4 items-center justify-between'>
+      {/* Fixed Navbar */}
+      <nav className='fixed top-0 left-0 w-full z-50 flex bg-zinc-800 text-white px-8 py-4 items-center justify-between shadow-md'>
         <Link className='flex items-center'>
           <img
             className='h-10 me-4'
@@ -85,8 +84,9 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Navigation */}
       {mobileNavVisible && (
-        <div className='bg-zinc-800 h-screen absolute top-0 left-0 w-full z-40 flex flex-col items-center justify-center'>
+        <div className='bg-zinc-800 h-screen fixed top-0 left-0 w-full z-40 flex flex-col items-center justify-center'>
           {filteredLinks.map((item, i) => (
             <Link
               to={item.link}

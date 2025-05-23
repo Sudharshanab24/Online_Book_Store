@@ -18,60 +18,67 @@ const Sidebar = ({ data }) => {
     navigate("/");
   };
 
-  const isAdmin = data.username === "admin"; // fix for username check
+  const isAdmin = data.username === "admin";
 
   return (
-    <div className="bg-zinc-800 p-4 rounded fixed top-17 left-0 h-screen w-[240px] z-10 flex flex-col items-center justify-start overflow-y-auto">
-
-      <div className="flex items-center flex-col justify-center">
-        <img src={data.avatar} className="h-[12vh]" alt="User Avatar" />
+    <div className="bg-zinc-800 fixed top-0 left-0 h-screen w-[240px] z-10 flex items-center justify-center p-4 overflow-y-auto shadow-lg">
+      <div className="flex flex-col items-center w-full">
+        {/* User Info */}
+        <img src={data.avatar} className="h-[12vh] rounded-full" alt="User Avatar" />
         <p className="mt-3 text-xl text-zinc-100 font-semibold">{data.username}</p>
-        <p className="mt-1 text-normal text-zinc-300">{data.email}</p>
-        <div className="w-full mt-4 h-[1px] bg-zinc-500 hidden lg:block"></div>
+        <p className="mt-1 text-sm text-zinc-300 text-center px-2">{data.email}</p>
 
-        {!isAdmin && (
-          <div className="w-full flex-col items-center justify-center flex mt-4">
-            <Link
-              to="/profile"
-              className="text-zinc-100 font-semibold w-full py-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
-            >
-              Favorites
-            </Link>
-            <Link
-              to="/profile/OrderHistory"
-              className="text-zinc-100 font-semibold w-full py-2 mt-4 text-center hover:bg-zinc-900 rounded transition-all duration-300"
-            >
-              Order History
-            </Link>
-            <Link
-              to="/profile/settings"
-              className="text-zinc-100 font-semibold w-full py-2 mt-4 text-center hover:bg-zinc-900 rounded transition-all duration-300"
-            >
-              Settings
-            </Link>
-          </div>
-        )}
-        {role=="admin" && <div className="w-full flex-col items-center justify-center flex mt-4">
-            <Link
-              to="/profile"
-              className="text-zinc-100 font-semibold w-full py-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
-            >
-              All Orders
-            </Link>
-            <Link
-              to="/profile/add-book"
-              className="text-zinc-100 font-semibold w-full py-2 mt-4 text-center hover:bg-zinc-900 rounded transition-all duration-300"
-            >
-              Add Book
-            </Link>
-            
-          </div>}
+        <div className="w-full mt-4 h-[1px] bg-zinc-500"></div>
 
+        {/* Navigation */}
+        <div className="w-full mt-4 flex flex-col items-center justify-center">
+          {!isAdmin && (
+            <>
+              <Link
+                to="/profile"
+                className="text-zinc-100 font-semibold w-full py-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
+              >
+                Favorites
+              </Link>
+              <Link
+                to="/profile/OrderHistory"
+                className="text-zinc-100 font-semibold w-full py-2 mt-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
+              >
+                Order History
+              </Link>
+              <Link
+                to="/profile/settings"
+                className="text-zinc-100 font-semibold w-full py-2 mt-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
+              >
+                Settings
+              </Link>
+            </>
+          )}
+
+          {role === "admin" && (
+            <>
+              <Link
+                to="/profile"
+                className="text-zinc-100 font-semibold w-full py-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
+              >
+                All Orders
+              </Link>
+              <Link
+                to="/profile/add-book"
+                className="text-zinc-100 font-semibold w-full py-2 mt-2 text-center hover:bg-zinc-900 rounded transition-all duration-300"
+              >
+                Add Book
+              </Link>
+            </>
+          )}
+        </div>
+
+        {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="bg-zinc-900 w-3/6 lg:w-full mt-4 text-white font-semibold flex items-center justify-center py-2 rounded hover:bg-white hover:text-zinc-900 transition-all duration-300"
+          className="bg-zinc-900 w-3/4 mt-6 text-white font-semibold flex items-center justify-center py-2 rounded hover:bg-white hover:text-zinc-900 transition-all duration-300"
         >
-          Log Out <FaArrowRightFromBracket className="ms-4" />
+          Log Out <FaArrowRightFromBracket className="ml-2" />
         </button>
       </div>
     </div>

@@ -45,6 +45,9 @@ const AllBooks = () => {
           onChange={(e) => setStandard(e.target.value)}
         >
           <option value="">All</option>
+          <option value="Pre-KG">Pre-KG</option>
+            <option value="LKG">LKG</option>
+            <option value="UKG">UKG</option>
           <option value="1st">1st</option>
           <option value="2nd">2nd</option>
           <option value="3rd">3rd</option>
